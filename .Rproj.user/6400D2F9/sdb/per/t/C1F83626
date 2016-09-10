@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "\n## Lead in water data analysis repository\n\nThis repository contains source data and analysis code for the following stories published on TrendCT.org. \n* [Which neighborhoods have the highest risk of lead poisoning in CT?](http://trendct.org/2016/04/08/where-the-risk-for-lead-poisoning-in-connecticut-is-highest/)\n* [Drinking water violations across Connecticut](http://trendct.org/2016/04/06/drinking-water-violations-across-connecticut)\n* [Where lead was detected in Connecticut’s drinking water](http://trendct.org/2016/04/04/where-lead-was-detected-in-connecticuts-drinking-water) \n* [Most CT schools don’t test water for lead, but that could change](http://ctmirror.org/2016/04/01/most-ct-schools-dont-test-water-for-lead-but-that-could-change)\n\nIt may be too technical for the average reader, but we make it accessible because we believe it is important to be as transparent as possible about our methodology so our work can be checked or expanded upon.\n\nCheck us out on Twitter [@TrendCT](http://www.trendct.org) and on [Facebook/TrendCT](https://www.facebook.com/trendct/).\n\n### What's in this repo\n\n* Folder with raw data, data dictionary, as well as cleaned up data used in filterable table\n* Scripts used to pull violations and action data from the EPA drinking water database\n* [Walkthrough](http://trendct.github.io/data/2016/03/lead-analysis/elevated_lead_levels.html): Methodology and process (RMarkdown) of analysis behind the story [Where lead was detected in Connecticut’s drinking water](http://trendct.org/2016/04/04/where-lead-was-detected-in-connecticuts-drinking-water)\n* HTML of leaflet mapping output used in [Where lead was detected in Connecticut’s drinking water](http://trendct.org/2016/04/04/where-lead-was-detected-in-connecticuts-drinking-water) \n* [Walkthrough](http://trendct.github.io/data/2016/03/lead-analysis/lead_risk_analysis.html): Data and methodology behind the story [Which neighborhoods have the highest risk of lead poisoning in CT?](http://trendct.org/2016/04/08/where-the-risk-for-lead-poisoning-in-connecticut-is-highest/) which was based on Vox's [lead exposure project](https://github.com/voxmedia/data-projects/tree/master/vox-lead-exposure-risk).\n\n\n### How to get the list of lead violations from the EPA\n\nLead ALE violations in CT\n\n1. Visit the SDWIS [Federal Reports Search](https://ofmpub.epa.gov/apex/sfdw/f?p=108:200:::NO)\n2. Click the 'Advanced Search Options' button\n3. In the top-most section, select 'Lead and Copper Report'\n4. Select 'Lead ALE Samples' under Choose Report\n5. Select 'Connecticut' from 'Primary Agency'\n6. Set Sample Start Date and Sample End Date to '1/1/2000' and '1/1/2016'\n7. Click the 'View Reports' button at the top right\n\n### How to get the list of all drinking water violations from the EPA\n\n1. Visit the SDWIS [Federal Reports Search](https://ofmpub.epa.gov/apex/sfdw/f?p=108:200:::NO)\n2. Click the 'Advanced Search Options' button\n3. In the top-most section, select 'Violations'\n4. Select 'Connecticut' from 'Primary Agency'\n5. Set Compliance Period Start Date and Compliance Period End Date to '1/1/2000' and '1/1/2016'\n6. Click the 'View Reports' button at the top right\n\n",
+    "created" : 1460149772170.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3259174723",
+    "id" : "C1F83626",
+    "lastKnownWriteTime" : 1460307738,
+    "last_content_update" : 1460307738,
+    "path" : "~/Documents/Github/trendct-data/2016/03/lead-analysis/readme.md",
+    "project_path" : "readme.md",
+    "properties" : {
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "markdown"
+}

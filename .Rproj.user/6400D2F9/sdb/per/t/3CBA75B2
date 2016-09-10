@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "# Replicating Vox risk of lead by census block\n# This is the raw script. For a thorough walkthrough, visit http://trendct.github.io/data/2016/03/lead-analysis/geospatial_lead_risk.html\n\nlibrary(dplyr)\nlibrary(scales)\nrequire(rgdal)\nrequire(ggmap)\nrequire(Cairo)\nrequire(maptools)\nlibrary(ggplot2)\n#devtools::install_github(\"hrecht/censusapi\")\nlibrary(censusapi)\nsource(\"keys.R\")\n\nhousing <- getCensus(name=\"acs5\", \n                      vintage=2014,\n                      key=censuskey, \n                      vars=c(\"NAME\", \"B25034_001E\", \"B25034_002E\", \"B25034_003E\", \n                             \"B25034_004E\",\"B25034_005E\",\"B25034_006E\",\"B25034_007E\",\n                             \"B25034_008E\",\"B25034_009E\",\"B25034_010E\", \"B17004_001E\"\n                             ), \n                      region=\"tract:*\", regionin=\"state:09\")\n\n# S1701 is not accessible via the Census API but I found the equivalent in B06012\n\npoverty <- getCensus(name=\"acs5\", \n                      vintage=2014,\n                      key=censuskey, \n                      vars=c(\"NAME\", \"B06012_001E\", \"B06012_002E\"\n                      ), \n                      region=\"tract:*\", regionin=\"state:09\")\n\nold <- housing\n\nold$age_39 <- old$B25034_010E * .68\nold$age40_59 <- (old$B25034_009E + old$B25034_008E) * .43\nold$age60_79 <- (old$B25034_007E + old$B25034_006E) * .08\nold$age80_99 <- (old$B25034_005E + old$B25034_004E) * .03\nold$age00_10 <- (old$B25034_003E + old$B25034_002E) * 0\nold$total <-  old$B25034_001E\n\nold$risk_sum <- old$age_39 + old$age40_59 + old$age60_79 + old$age80_99 + old$age80_99 + old$age00_10\nold$risk <- old$risk_sum/old$total*100\nold <- subset(old, total>0)\n\n# Poverty\n\npoverty$percent_poverty <- poverty$B06012_002E/poverty$B06012_001E * 100\npoverty <- subset(poverty, B06012_001E>0)\n\n# Z score\n# (x-mean(x))/sd(x)\n\npoverty$z_poverty <- (poverty$percent_poverty - mean(poverty$percent_poverty))/sd(poverty$percent_poverty)\nold$z_housing <-  (old$risk - mean(old$risk))/sd(old$risk)\n\n# Calcuating weighted figures\n\npoverty$weighted_poverty <- poverty$z_poverty * .42\nold$weighted_housing <- old$z_housing * .58\n\n# join dataframes\n\npoverty$tract_id <- paste0(poverty$state, poverty$county, poverty$tract)\nold$tract_id <- paste0(old$state, old$county, old$tract)\n\nold <- old[c(\"tract_id\", \"risk\", \"z_housing\", \"weighted_housing\")]\n#colnames(old) <- c(\"tract_id\", \"risk\", \"z_housing\", \"weighted_housing\")\n\ndf <- left_join(poverty, old)\n\ndf$riskscore_raw <- df$weighted_housing + df$weighted_poverty\n\n# calculating deciles on risk score\n\ndf <- mutate(df, quantile = ntile(riskscore_raw, 10))\ndf$id <- df$tract\n\ngpclibPermit()\ngpclibPermitStatus()\ncensustracts <- readOGR(dsn=\"maps/census_tracts/wgs84\", layer=\"tractct_37800_0000_2010_s100_census_1_shp_wgs84\")\ncensustracts_only <- censustracts\ncensustracts <- fortify(censustracts, region=\"TRACTCE10\")\n\nrisk_map <- left_join(censustracts, df)\n\ndtm_df <- ggplot() +\n  geom_polygon(data = risk_map, aes(x=long, y=lat, group=group, fill=quantile), color = \"black\", size=0.2) +\n  coord_map() +\n  scale_fill_distiller(type=\"seq\", trans=\"reverse\", palette = \"Reds\", breaks=pretty_breaks(n=10)) +\n  theme_nothing(legend=TRUE) +\n  labs(title=\"Estimated lead risk\", fill=\"\")\n",
+    "created" : 1459954590391.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3833172027",
+    "id" : "3CBA75B2",
+    "lastKnownWriteTime" : 1460151101,
+    "last_content_update" : 1460151101,
+    "path" : "~/Documents/Github/trendct-data/2016/03/lead-analysis/geospatial_lead_risk.R",
+    "project_path" : "geospatial_lead_risk.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 8,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
